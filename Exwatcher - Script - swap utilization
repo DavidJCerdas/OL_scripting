@@ -1,0 +1,60 @@
+++ Exwatcher - Script - swap utilization
+
+> ./Swap_utilization.sh&&vi ./Swap_utilization.sh
+---------------------------------------------------------------------------------------------------
+#!/bin/bash
+
+treshold=$1
+
+if [ -n "$treshold" ]
+then 
+	for file in `ls -1 *.dat`
+	do
+	 ## date and time
+	 egrep zzz $file
+	 ## ((total-free)/total)*100  : Swap used+cached  - (free/total)*100  : free   
+	 awk '/Swap/ {print "Swapory Utilization: "(($2-$6)/$2)*100" - Free Swapory: "($6/$2)*100 } ' $file|tr -d k|awk -vtreshold=$treshold '{if($3>=treshold) print $0}'
+	done
+else 
+    echo "variable is unset"
+	echo "Please use this statement as example"
+	echo "./Swap_utilization.sh <treshold in number>"
+fi
+---------------------------------------------------------------------------------------------------
+chmod u+x ./Swap_utilization.sh&&./Swap_utilization.sh
+
+[>]
+$ chmod u+x ./Swap_utilization.sh&&./Swap_utilization.sh
+variable is unset
+Please use this statement as example
+./Swap_utilization.sh <treshold in number>
+
+$ chmod u+x ./Swap_utilization.sh&&./Swap_utilization.sh 0.88 |head -n3
+zzz <06/24/2016 03:34:14> Count:720
+Swap Utilization: 0.886742 - Free Swap: 99.1133
+Swap Utilization: 0.886742 - Free Swap: 99.1133
+---------------
+
++ On average
+
+> ./Swap_utilization.sh&&vi ./Swap_utilization.sh
+---------------------------------------------------------------------------------------------------
+#!/bin/bash
+
+for file in `ls -1 2016_07_1*.dat`
+do
+	 # date and time
+	 echo "----$file----"
+	 egrep zzz $file
+     # Calculate the average in numbers per day
+	 avg_total=`egrep "Swap:" $file|tr -d k |awk ' {sum+=$2} END { printf "%0.2f\n", sum/NR}'`
+	 avg_free=`egrep "Swap:" $file|tr -d k |awk ' {sum+=$6} END { printf "%0.2f\n", sum/NR}'`
+     avg_utilization=`echo "$avg_total $avg_free"|awk '{ printf "%0.2f\n",  ($1-$2)}'`
+     # Print the average in numbers and in %
+	 echo "avg_total:$avg_total avg_free:$avg_free avg_utilization:$avg_utilization"
+	 echo "$avg_total $avg_free $avg_utilization"|awk '{print "On Average Swap Utilization: "($3/$1)*100"% - Swap Free:"($2/$1)*100"%"}'
+	 echo ""
+	 
+done
+---------------------------------------------------------------------------------------------------
+chmod u+x ./Swap_utilization.sh&&./Swap_utilization.sh
