@@ -5,7 +5,7 @@
 # Version     	: 1.0
 # Copyright   	: GPLv2
 # Description	: Script to list the Files that are using most of the space on determine FS
-# Usage			: ./fs.sh <FileSystem to analyze>  <Size><Unit K/M/G> <number of files otherwise 20 is the default>
+# Usage		: ./fs.sh <FileSystem to analyze>  <Size><Unit M/G> <number of files otherwise 20 is the default>
 
 
 fs=$1
@@ -16,7 +16,7 @@ nfiles=$3
 # In case of an error
 errormgs(){
 	clear
-    echo "Please verify the syntax and the values are not null/0"
+	echo "Please verify the syntax and the values are not null/0"
 	echo "# ./fs.sh <FileSystem to analyze>  <Size><Unit M/G> <number of files otherwise 20 is the default>"
 	echo -e "\nExample:"
 	echo "# ./fs.sh /var/log  2G 25"
