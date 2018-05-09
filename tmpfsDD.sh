@@ -4,7 +4,6 @@
 # Version     	: 1.0
 # Copyright   	: GPLv2
 # Description	:  The idea is to get familiar about how tmpfs utilization is related with the virtual Memory utilization
-#					This is not a valid memory performance test, but a way to get familiar with tmpfs
 
 
 uname -r&&cat /etc/oracle-release&&cat /proc/cmdline
